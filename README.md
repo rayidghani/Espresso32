@@ -10,3 +10,5 @@
 ## Utilities
 - [convert fonts to micropython](https://github.com/peterhinch/micropython-font-to-py)
 - [Ampy: to copy files over to esp32](https://github.com/scientifichackers/ampy)
+
+## Notes and Helpful Links
