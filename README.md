@@ -12,3 +12,4 @@
 - [Ampy: to copy files over to esp32](https://github.com/scientifichackers/ampy)
 
 ## Notes and Helpful Links
+- [micropython](http://docs.micropython.org/en/v1.10/esp32/quickref.html)
