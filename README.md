@@ -1,4 +1,4 @@
-# esp32
+# ESPresso32
 
 ## Parts
 - [Board](https://www.amazon.com/gp/product/B08D5ZD528/ref=ppx_yo_dt_b_asin_title_o08_s00?ie=UTF8&psc=1)
