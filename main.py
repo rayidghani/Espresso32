@@ -259,7 +259,7 @@ def init_sleep():
 
 
 
-def print_time_weight(write_to_google_sheet=0):
+def print_time_weight(write_to_google_sheet=0, sleep=1):
     # change to 1) get initial value at start 2) if it goes 20 above start 3) if it gets ot within 5% of initial stop
     # initial_temperature = esp32.hall_sensor()
     # start_threshold = initial_temperature + 15
@@ -278,7 +278,7 @@ def print_time_weight(write_to_google_sheet=0):
     while 1:
         time.sleep(polling_interval)
         idle_time+=polling_interval
-        if idle_time > 120:
+        if (idle_time > 120) and (sleep):
             write_to_oled_with_font(oled_i2c, 'sleeping', freesans20)
             time.sleep(5)
             t=init_sleep()
@@ -312,4 +312,4 @@ gc.enable()
 print('garbage collection threshold: ' + str(gc.threshold()))
 t=init_sleep()
 time.sleep(2)
-print_time_weight() # pass 1 if you want to write to google sheet
+print_time_weight(0,0) # pass 1 if you want to write to google sheet
