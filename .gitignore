@@ -1,6 +1,6 @@
 boot.py
 *.json
-*.main
+*.conf
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
