@@ -28,7 +28,7 @@ class Spreadsheet:
     def set_service_account(self, sa):
         self._sa = sa
 
-    def append_values(self, values):
+    def append_values_with_timestamp(self, values):
         print('spreadsheet: send: %s' % values)
 
         token = self._sa.token()
@@ -39,6 +39,25 @@ class Spreadsheet:
         headers = {}
         headers['Content-Type'] = 'application/json'
         headers['Authorization'] = 'Bearer %s' % token
+        response = requests.post(url, json=data, headers=headers)
+
+        if not response:
+            print('spreadsheet: no response received')
+
+        print('spreadsheet: response:')
+        print(response.text)
+
+    def append_values(self, values):
+        print('spreadsheet: send: %s' % values)
+
+        token = self._sa.token()
+
+        url = self._url_template % (self._id, self._range, self._url_params)
+        data = {'values': values }
+        headers = {}
+        headers['Content-Type'] = 'application/json'
+        headers['Authorization'] = 'Bearer %s' % token
+     
         response = requests.post(url, json=data, headers=headers)
 
         if not response:
