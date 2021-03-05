@@ -10,6 +10,7 @@
 ## Utilities
 - [convert fonts to micropython](https://github.com/peterhinch/micropython-font-to-py)
 - [Ampy: to copy files over to esp32](https://github.com/scientifichackers/ampy)
+- [HX711 code](https://github.com/robert-hh/hx711)
 
 ## Notes and Helpful Links
 - [micropython](http://docs.micropython.org/en/v1.10/esp32/quickref.html)
