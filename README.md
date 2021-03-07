@@ -4,6 +4,7 @@
 1. connect ESP32 to your computer and find the port it is on:
 
  `ls /dev/cu.*`
+ 
 2. flash it with a micropython firmware using esptool.py
 
  `pip install esptool`
