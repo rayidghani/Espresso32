@@ -293,7 +293,7 @@ def print_time_weight(write_to_google_sheet=0, sleep=1):
             weight=0
             time_weight_pairs=[]
             time_weight_pairs.append([start_time,num_seconds,weight])
-            # while not stop_timer(stop_threshold):
+            # while not stop_timer(stop_threshold): 
             while not stop_timer_external_hall():
                 time.sleep(1)
                 num_seconds+=1
@@ -307,9 +307,15 @@ def print_time_weight(write_to_google_sheet=0, sleep=1):
                 sheet.append_values(time_weight_pairs)
             idle_time=0
     
+try:
+    gc.enable()
+    print('garbage collection threshold: ' + str(gc.threshold()))
+    t=init_sleep()
+    time.sleep(2)
+    print_time_weight(0,0) # pass 1 if you want to write to google sheet
+except KeyboardInterrupt:
+    import sys
+    sys.exit()
+except Exception:
+    machine.reset()
 
-gc.enable()
-print('garbage collection threshold: ' + str(gc.threshold()))
-t=init_sleep()
-time.sleep(2)
-print_time_weight(0,0) # pass 1 if you want to write to google sheet
