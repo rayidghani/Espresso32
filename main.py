@@ -14,6 +14,7 @@ import ntptime
 import machine
 import esp32
 import time
+import dht 
 
 
 def initialize_google_sheets():
@@ -182,30 +183,18 @@ def write_to_oled_with_font(ssd, message, fontname):
 
 # weights hx711 and load cell
 
-def init_weight():
-    hx711 = HX711(14, 27)
-    hx711.set_scale(9100/5.9)
+def init_weight(dtpin=14,sckpin=27, scalefactor=140629.0/89.0 ): 
+    hx711 = HX711(dtpin, sckpin)
+    hx711.set_scale(scalefactor)
     hx711.tare()
     return hx711
-
-
-def test_raw_weight():
-    pot = ADC(Pin(39))
-    pot.atten(ADC.ATTN_11DB)      
-    pot2 = ADC(Pin(36))
-    pot2.atten(ADC.ATTN_11DB)   
-
-    while True:
-      pot_value = pot2.read()-pot.read()
-      print(pot_value)
-      time.sleep(0.1)
 
 
 def get_weight(hx711):
     # takes tared and calibrated and returns weight in grams
     return hx711.get_units()
 
-def print_weight(hx711,ssd, fontname):
+def print_weight_oled(hx711,ssd, fontname):
     weight = get_weight(hx711)
     write_to_oled_with_font(ssd, str(weight) + 'g', fontname)
 
@@ -245,12 +234,45 @@ def test_sleep():
 
 
 def init_sleep():
- t = machine.TouchPad(machine.Pin(14))       # assign touch pin 14 to t
+ t = machine.TouchPad(machine.Pin(12))       # assign touch pin 14 to t
  t.config(300)               # configure the threshold at which the pin is considered touched
  esp32.wake_on_touch(True)   # enable wake_on_touch
  return t
 
 
+######################################
+### tepmerature & humidity sensor  ###
+######################################
+
+
+def get_temp_humid(pinid=14):
+
+    # sensor = dht.DHT22(Pin(14))
+    sensor = dht.DHT11(Pin(pinid))
+
+    while True:
+        try:
+            sleep(2)
+            sensor.measure()
+            temp = sensor.temperature()
+            hum = sensor.humidity()
+            temp_f = temp * (9/5) + 32.0
+            print('Temperature: %3.1f C' %temp)
+            print('Temperature: %3.1f F' %temp_f)
+            print('Humidity: %3.1f %%' %hum)
+        except OSError as e:
+            print('Failed to read sensor.')
+
+
+def return_temp_humid(pinid=14):
+
+    # sensor = dht.DHT22(Pin(14))
+    sensor = dht.DHT11(Pin(pinid))
+    sensor.measure()
+    temp = sensor.temperature()
+    hum = sensor.humidity()
+    temp_f = temp * (9/5) + 32.0
+    return temp_f,hum
 
 
 ######################################
@@ -272,6 +294,8 @@ def print_time_weight(write_to_google_sheet=0, sleep=1):
     sheet = initialize_google_sheets()
     ntptime.settime()
     polling_interval=0.1
+
+
     idle_time=0
     write_to_oled_with_font(oled_i2c, 'Espresso32', freesans20)
 
