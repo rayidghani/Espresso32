@@ -1,5 +1,5 @@
 # ESPresso32
-My firt ESP32 project
+My first ESP32 project
 
 ## What does it do?
 Starts a timer and starts logging espresso weight coming out as soon as I turn the brew switch/paddle on my Linea Mini espresso machine. Shows the shot time and espresso weight on an oled display and logs it to google sheets as well.
