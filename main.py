@@ -240,6 +240,13 @@ def init_sleep():
  return t
 
 
+def test_weight():
+    hx711=init_weight()
+    while 1:
+        time.sleep(1)
+        hx711.read()
+
+
 ######################################
 ### tepmerature & humidity sensor  ###
 ######################################
@@ -281,19 +288,14 @@ def return_temp_humid(pinid=14):
 
 
 
-def print_time_weight(write_to_google_sheet=0, sleep=1):
-    # change to 1) get initial value at start 2) if it goes 20 above start 3) if it gets ot within 5% of initial stop
-    # initial_temperature = esp32.hall_sensor()
-    # start_threshold = initial_temperature + 15
-    # stop_threshold = initial_temperature + 3
-
+def timer_and_scale(write_to_google_sheet=0, sleep=0):
+ 
     oled_i2c = init_spi_oled()
     hx711 = init_weight()
-    #start_threshold = 100
-    #stop_threshold = 80
     sheet = initialize_google_sheets()
     ntptime.settime()
-    polling_interval=0.1
+    polling_interval=0.1 # how often to check if magnet is on
+    sleep_after_seconds = 600  # time after which esp32 goes to sleep if not used
 
 
     idle_time=0
@@ -302,28 +304,28 @@ def print_time_weight(write_to_google_sheet=0, sleep=1):
     while 1:
         time.sleep(polling_interval)
         idle_time+=polling_interval
-        if (idle_time > 120) and (sleep):
-            write_to_oled_with_font(oled_i2c, 'sleeping', freesans20)
+        # hx711.tare()
+        if (idle_time > sleep_after_seconds) and (sleep):
+            write_to_oled_with_font(oled_i2c, 'Going to sleep...', freesans20)
             time.sleep(5)
             t=init_sleep()
             # machine.lightsleep()
             machine.deepsleep()
 
-        # if start_timer(start_threshold):
         if start_timer_external_hall():
             print("Starting timer")
             start_time = get_localtime_as_string()
             num_seconds=0
-            weight=0
+            start_weight_reading = round(get_weight(hx711),2)
             time_weight_pairs=[]
-            time_weight_pairs.append([start_time,num_seconds,weight])
-            # while not stop_timer(stop_threshold): 
+            time_weight_pairs.append([start_time,0,0])
             while not stop_timer_external_hall():
                 time.sleep(1)
                 num_seconds+=1
-                weight = round(get_weight(hx711),2)
+                weight = round(get_weight(hx711) -  start_weight_reading,2)
                 time_weight_pairs.append([start_time,num_seconds,weight])
-                print(num_seconds) # print to display
+                print(num_seconds)
+                print(weight)
                 # write_to_oled(oled_i2c, str(num_seconds)+ 'sec')
                 write_to_oled_with_font(oled_i2c, str(num_seconds)+'sec\n' + str(weight) + 'g', arial28)
             print("timer stopped")
@@ -336,7 +338,9 @@ try:
     print('garbage collection threshold: ' + str(gc.threshold()))
     t=init_sleep()
     time.sleep(2)
-    print_time_weight(0,0) # pass 1 if you want to write to google sheet
+    write_to_gsheet=1
+    sleep_after_idle=0
+    timer_and_scale(write_to_gsheet,sleep_after_idle) # pass 1 if you want to write to google sheet
 except KeyboardInterrupt:
     import sys
     sys.exit()
