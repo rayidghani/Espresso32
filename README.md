@@ -1,4 +1,12 @@
 # ESPresso32
+My firt ESP32 project
+
+## What does it do?
+Starts a timer and starts logging espresso weight coming out as soon as I turn the brew switch/paddle on my Linea Mini espresso machine. Shows the shot time and espresso weight on an oled display and logs it to google sheets as well.
+
+## What's coming next?
+1. Add a water level sensor and show the level on the display
+2. connect it to the temperature dial to show and log the temperature as well
 
 ## Getting started
 1. connect ESP32 to your computer and find the port it is on:
@@ -12,7 +20,7 @@
  `esptool.py --chip esp32 --port /dev/cu.usbserial-0001 write_flash -z 0x1000 esp32-idf3-20210202-v1.14.bin`
  
 3. Ready to go
-    - copy boot.py and main.py to the board
+    - copy boot.py, main.py, and all the other files to the board (or use the shell script `copy_files_to_esp32.sh`) 
     - install any micropython modules with upip
 
 ## Parts
