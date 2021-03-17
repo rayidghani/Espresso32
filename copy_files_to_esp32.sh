@@ -1,0 +1,12 @@
+ampy -p /dev/cu.usbserial-0001 -b 115200 put boot.py
+ampy -p /dev/cu.usbserial-0001 -b 115200 put config.py
+ampy -p /dev/cu.usbserial-0001 -b 115200 put hx711.py
+ampy -p /dev/cu.usbserial-0001 -b 115200 put util.py
+ampy -p /dev/cu.usbserial-0001 -b 115200 put ssd1306.py
+ampy -p /dev/cu.usbserial-0001 -b 115200 put ntp.py
+ampy -p /dev/cu.usbserial-0001 -b 115200 put key.json
+ampy -p /dev/cu.usbserial-0001 -b 115200 put rsa
+ampy -p /dev/cu.usbserial-0001 -b 115200 put google
+ampy -p /dev/cu.usbserial-0001 -b 115200 put writer
+ampy -p /dev/cu.usbserial-0001 -b 115200 put main.conf
+ampy -p /dev/cu.usbserial-0001 -b 115200 put main.py
