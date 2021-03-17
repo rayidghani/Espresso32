@@ -32,7 +32,7 @@ Starts a timer and starts logging espresso weight coming out as soon as I turn t
 
 ## Circuit
 
-![esp32 board](https://www.evernote.com/shard/s277/res/a74d1b10-1da8-a41e-7984-a4b397f4b8ea)
+![esp32 board](https://circuits4you.com/wp-content/uploads/2018/12/ESP32-Pinout.jpg)
 
 
 ## Utilities
